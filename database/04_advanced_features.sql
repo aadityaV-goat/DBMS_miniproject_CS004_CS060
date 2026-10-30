@@ -212,6 +212,7 @@ SELECT
     b.booking_id,
     b.guest_id,
     CONCAT(g.first_name, ' ', g.last_name)            AS guest_name,
+    b.room_id,
     r.room_number,
     rt.type_name,
     b.check_in,
