@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:users": "tsx scripts/seed-users.ts"
+    "seed:users": "tsx scripts/seed-users.ts",
+    "sync:neo4j": "tsx scripts/sync-neo4j.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
