@@ -138,14 +138,14 @@ export function Stat({ label, value, hint }: { label: string; value: React.React
   );
 }
 
-// Shows the SQL behind a result, for the viva demo.
-export function SqlBox({ sql, params }: { sql: string; params?: unknown[] }) {
+// Shows the SQL (or Cypher) behind a result, for the viva demo.
+export function SqlBox({ sql, params, label = "Show SQL" }: { sql: string; params?: unknown[]; label?: string }) {
   return (
     <details className="mt-3 rounded-lg bg-slate-900 text-slate-100">
-      <summary className="cursor-pointer select-none px-4 py-2 text-xs font-medium text-slate-300">Show SQL</summary>
+      <summary className="cursor-pointer select-none px-4 py-2 text-xs font-medium text-slate-300">{label}</summary>
       <pre className="overflow-x-auto px-4 pb-4 text-xs leading-relaxed"><code>{sql.trim()}</code></pre>
       {params && params.length > 0 && (
-        <p className="px-4 pb-3 text-xs text-slate-400">Parameters (bound to the ? placeholders): {JSON.stringify(params)}</p>
+        <p className="px-4 pb-3 text-xs text-slate-400">Parameters (sent separately, never pasted into the query): {JSON.stringify(params)}</p>
       )}
     </details>
   );
