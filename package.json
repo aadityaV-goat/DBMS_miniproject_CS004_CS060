@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed:users": "tsx scripts/seed-users.ts",
-    "sync:neo4j": "tsx scripts/sync-neo4j.ts"
+    "sync:neo4j": "tsx scripts/sync-neo4j.ts",
+    "test:api": "bash scripts/api-test.sh"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
