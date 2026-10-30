@@ -55,41 +55,39 @@ export default function GuestDetailPage({ params }: { params: Promise<{ id: stri
         <Stat label="Balance due" value={money(totals.due)} hint="From the v_booking_bill view" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card title="Bookings and bills" className="lg:col-span-2">
-          <Table head={["#", "Room", "Dates", "Room cost", "Services", "Total", "Paid", "Due"]} empty={bookings.length === 0}>
-            {bookings.map((b) => (
-              <tr key={b.booking_id} className="hover:bg-slate-50">
-                <td><Link href={`/bookings/${b.booking_id}`} className="font-medium text-teal-700 hover:underline">#{b.booking_id}</Link></td>
-                <td>{b.room_number} <span className="text-xs text-slate-400">{b.type_name}</span></td>
-                <td className="whitespace-nowrap">{fmtDate(b.check_in)} → {fmtDate(b.check_out)} <span className="text-xs text-slate-400">({b.num_nights}n)</span></td>
-                <td>{money(b.room_cost)}</td>
-                <td>{money(b.services_total)}</td>
-                <td className="font-medium">{money(b.total_amount)}</td>
-                <td>{money(b.amount_paid)}</td>
-                <td>{b.balance_due > 0 ? <Badge color="amber">{money(b.balance_due)}</Badge> : b.balance_due < 0 ? <Badge color="blue">Refund {money(-b.balance_due)}</Badge> : <Badge color="green">Paid</Badge>}</td>
-              </tr>
-            ))}
-          </Table>
-        </Card>
+      <Card title="Bookings and bills" className="mb-6">
+        <Table head={["#", "Room", "Dates", "Room cost", "Services", "Total", "Paid", "Due"]} empty={bookings.length === 0}>
+          {bookings.map((b) => (
+            <tr key={b.booking_id} className="hover:bg-slate-50">
+              <td><Link href={`/bookings/${b.booking_id}`} className="font-medium text-teal-700 hover:underline">#{b.booking_id}</Link></td>
+              <td>{b.room_number} <span className="text-xs text-slate-400">{b.type_name}</span></td>
+              <td className="whitespace-nowrap">{fmtDate(b.check_in)} → {fmtDate(b.check_out)} <span className="text-xs text-slate-400">({b.num_nights}n)</span></td>
+              <td>{money(b.room_cost)}</td>
+              <td>{money(b.services_total)}</td>
+              <td className="font-medium">{money(b.total_amount)}</td>
+              <td>{money(b.amount_paid)}</td>
+              <td>{b.balance_due > 0 ? <Badge color="amber">{money(b.balance_due)}</Badge> : b.balance_due < 0 ? <Badge color="blue">Refund {money(-b.balance_due)}</Badge> : <Badge color="green">Paid</Badge>}</td>
+            </tr>
+          ))}
+        </Table>
+      </Card>
 
-        <div className="space-y-6">
-          <Card title="Services used">
-            {services.length === 0 ? (
-              <p className="text-sm text-slate-400">No add-on services yet.</p>
-            ) : (
-              <ul className="space-y-1.5 text-sm">
-                {services.map((s) => (
-                  <li key={s.service_id} className="flex justify-between">
-                    <span>{s.service_name}</span>
-                    <span className="text-slate-400">×{s.times}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
-          <Recommendations guestId={guest.guest_id} />
-        </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card title="Services used">
+          {services.length === 0 ? (
+            <p className="text-sm text-slate-400">No add-on services yet.</p>
+          ) : (
+            <ul className="space-y-1.5 text-sm">
+              {services.map((s) => (
+                <li key={s.service_id} className="flex justify-between">
+                  <span>{s.service_name}</span>
+                  <span className="text-slate-400">×{s.times}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+        <Recommendations guestId={guest.guest_id} />
       </div>
 
       <Modal title="Edit guest" open={editing} onClose={() => setEditing(false)}>
