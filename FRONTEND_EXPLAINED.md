@@ -155,8 +155,8 @@ Each `route.ts` exports functions named after HTTP methods (`GET`, `POST`, `PUT`
 
 | Username | Role | Employee | Password (local demo) |
 |---|---|---|---|
-| `admin` | ADMIN | Rohan Das, Manager | `Admin@2026` |
-| `reception` | STAFF | Kavya Menon, Receptionist | `Reception@2026` |
+| `admin` | ADMIN | Arjun Rao, Manager | `Admin@2026` |
+| `reception` | STAFF | Nisha Shetty, Receptionist | `Reception@2026` |
 
 The passwords come from `SEED_ADMIN_PASSWORD` / `SEED_STAFF_PASSWORD` in `.env.local`. The database only stores bcrypt hashes. To change them, edit `.env.local` and run `npm run seed:users`.
 
@@ -169,9 +169,9 @@ The passwords come from `SEED_ADMIN_PASSWORD` / `SEED_STAFF_PASSWORD` in `.env.l
 1. **(30 s) Problem and design.** "Receptionists and the manager handle guests, bookings, services and payments. MySQL holds the transactional data; Neo4j holds the relationships we use for recommendations." Show the ER diagram in `docs/DBMS_Project.pdf`.
 2. **(30 s) Roles.** Log in as `reception` in the private window and show that Employees and Reports aren't in the menu. Type `/employees` in the address bar: you get redirected with "admins only". Log in as `admin` in the other window.
 3. **(45 s) Dashboard.** Point at the KPIs and the two charts. Open **Show SQL** under "Services used more than once" to show the HAVING clause.
-4. **(45 s) Guests.** Type `pri` in the search box (FULLTEXT `MATCH … AGAINST`). Try to add a guest with `priya@example.com`: the UNIQUE message appears. Delete Aarav: "This guest has bookings…" (FK RESTRICT). Open Priya's page to show her bills and the Neo4j recommendations.
+4. **(45 s) Guests.** Type `diy` in the search box (FULLTEXT `MATCH … AGAINST`). Try to add a guest with `diya.rao@example.com`: the UNIQUE message appears. Delete Aarav: "This guest has bookings…" (FK RESTRICT). Open Diya's page to show her bills and the Neo4j recommendations.
 5. **(60 s) New booking, the key moment.** On Rooms, use the availability checker for 1–4 Nov and open Show SQL (NOT EXISTS). Click **Book →**. Pick Rahul, add Spa and Room Service, and enter a payment of 999999. Create it: "Payment … is more than the booking total". Explain that the procedure rolled back, so not even the booking was saved. Change the payment to 1000 and create it again. Show the detail page: nights were filled in by the trigger, and the bill comes from the view and the function.
-6. **(30 s) Trigger on update.** On that booking, click **Change dates / room** and move it into room 101 for 1–3 Nov: "This room is already booked … clashes with booking #1."
+6. **(30 s) Trigger on update.** On that booking, click **Change dates / room** and move it into room 302 for 1–3 Nov: "This room is already booked … clashes with booking #22."
 7. **(30 s) Reports.** Run report 3 (guest total with services) and report 5 (revenue with ROLLUP), each with its SQL.
 8. **(30 s) Neo4j.** On `/graph`, press **Sync from MySQL**. Show the recommendations for a guest and the Cypher behind them. Explain why this is easier in a graph.
 9. **(Optional) Tests.** Run `npm run test:api` in a terminal: 39 passed.

@@ -65,16 +65,12 @@ INSERT INTO BOOKING_SERVICE (booking_id, service_id) VALUES
 (21,1),(21,10),(21,8),
 (22,3);
 
--- Past stays are paid in full (= fn_booking_total); current stays are part-paid; booking 22 is unpaid.
-INSERT INTO PAYMENT (payment_date, amount, booking_id) VALUES
-('2026-08-05', 26500.00, 11),
-('2026-08-12', 16100.00, 12),
-('2026-08-20', 77650.00, 13),
-('2026-09-03',  8400.00, 14),
-('2026-09-10', 34500.00, 15),
-('2026-09-18', 10100.00, 16),
-('2026-10-02', 20100.00, 17),
-('2026-10-10', 25650.00, 18),
-('2026-10-15',  7900.00, 19),
-('2026-10-28', 10000.00, 20),
-('2026-10-29', 15000.00, 21);
+-- Past stays are paid in full; current stays are half-paid; booking 22 is unpaid.
+-- Amounts come from fn_booking_total, so they stay correct if 02's prices change.
+INSERT INTO PAYMENT (payment_date, amount, booking_id)
+SELECT check_in,
+       CASE WHEN booking_id <= 19 THEN fn_booking_total(booking_id)
+            ELSE ROUND(fn_booking_total(booking_id) / 2, -2) END,
+       booking_id
+FROM BOOKING
+WHERE booking_id BETWEEN 11 AND 21;

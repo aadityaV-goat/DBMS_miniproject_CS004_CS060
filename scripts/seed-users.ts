@@ -17,8 +17,8 @@ function env(name: string): string {
 
 // username, role, employee it belongs to, env var holding its password
 const DEMO_USERS = [
-  { username: "admin", role: "ADMIN", employeeId: 1, passwordVar: "SEED_ADMIN_PASSWORD" },     // Rohan Das, Manager
-  { username: "reception", role: "STAFF", employeeId: 2, passwordVar: "SEED_STAFF_PASSWORD" }, // Kavya Menon, Receptionist
+  { username: "admin", role: "ADMIN", employeeId: 1, passwordVar: "SEED_ADMIN_PASSWORD" },     // Arjun Rao, Manager
+  { username: "reception", role: "STAFF", employeeId: 2, passwordVar: "SEED_STAFF_PASSWORD" }, // Nisha Shetty, Receptionist
 ] as const;
 
 // Cost factor 10 = 2^10 hashing rounds: slow enough to resist guessing, fast enough to log in.

@@ -44,8 +44,8 @@ export default function GuestForm({ initial, onSaved }: { initial?: GuestFields;
         <Field label="First name"><Input value={form.first_name} onChange={set("first_name")} required maxLength={50} /></Field>
         <Field label="Last name"><Input value={form.last_name} onChange={set("last_name")} required maxLength={50} /></Field>
       </div>
-      <Field label="Phone"><Input value={form.phone} onChange={set("phone")} maxLength={20} inputMode="tel" /></Field>
-      <Field label="Email" hint="Must be unique (UNIQUE constraint)."><Input type="email" value={form.email} onChange={set("email")} maxLength={100} /></Field>
+      <Field label="Phone"><Input value={form.phone} onChange={set("phone")} required maxLength={20} inputMode="tel" /></Field>
+      <Field label="Email" hint="Must be unique (UNIQUE constraint)."><Input type="email" value={form.email} onChange={set("email")} required maxLength={120} /></Field>
       <div className="flex justify-end">
         <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save guest"}</Button>
       </div>

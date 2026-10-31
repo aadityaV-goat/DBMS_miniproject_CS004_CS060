@@ -75,7 +75,7 @@ ORDER BY b.check_in`,
     title: "4. How many rooms are occupied on a date",
     description: "Occupied rooms, total rooms and the occupancy percentage for one night.",
     concepts: ["COUNT(DISTINCT)", "Scalar subquery", "ROUND"],
-    params: [{ name: "date", label: "Date", type: "date", default: "2026-11-02" }],
+    params: [{ name: "date", label: "Date", type: "date", default: "2026-10-30" }],
     sql: `
 SELECT ?                                         AS on_date,
        COUNT(DISTINCT b.room_id)                 AS rooms_occupied,

@@ -80,7 +80,7 @@ function ServiceForm({ initial, onSaved }: { initial: Partial<Service>; onSaved:
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field label="Name"><Input value={name} onChange={(e) => setName(e.target.value)} required maxLength={100} /></Field>
+      <Field label="Name"><Input value={name} onChange={(e) => setName(e.target.value)} required maxLength={80} /></Field>
       <Field label="Price (₹)" hint="CHECK (price >= 0)"><Input type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required /></Field>
       <div className="flex justify-end"><Button type="submit">Save service</Button></div>
     </form>

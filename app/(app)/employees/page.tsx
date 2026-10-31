@@ -121,8 +121,8 @@ function EmployeeForm({ initial, onSaved }: { initial: Partial<Employee>; onSave
         <Field label="Last name"><Input value={f.last_name} onChange={set("last_name")} required /></Field>
       </div>
       <Field label="Job title"><Input value={f.role} onChange={set("role")} required placeholder="Receptionist, Chef…" /></Field>
-      <Field label="Phone"><Input value={f.phone} onChange={set("phone")} /></Field>
-      <Field label="Email" hint="Unique"><Input type="email" value={f.email} onChange={set("email")} /></Field>
+      <Field label="Phone"><Input value={f.phone} onChange={set("phone")} required maxLength={20} /></Field>
+      <Field label="Email" hint="Unique"><Input type="email" value={f.email} onChange={set("email")} required maxLength={120} /></Field>
       <div className="flex justify-end"><Button type="submit">Save employee</Button></div>
     </form>
   );

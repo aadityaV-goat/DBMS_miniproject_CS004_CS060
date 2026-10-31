@@ -38,13 +38,13 @@ check "staff cannot sync Neo4j (403)"          403 POST /api/graph/sync
 check "admin can open reports"                 200 GET  /api/reports "" "$TMP/admin"
 
 echo "Guests (UNIQUE, FK RESTRICT, FULLTEXT)"
-check "add guest"                              201 POST /api/guests '{"first_name":"Test","last_name":"Guest","email":"api.test@example.com"}'
+check "add guest"                              201 POST /api/guests '{"first_name":"Test","last_name":"Guest","phone":"9000000000","email":"api.test@example.com"}'
 GUEST=$(field "['guest_id']")
-check "duplicate email rejected (UNIQUE)"      409 POST /api/guests '{"first_name":"X","last_name":"Y","email":"api.test@example.com"}'
-check "invalid email rejected"                 400 POST /api/guests '{"first_name":"X","last_name":"Y","email":"nope"}'
+check "duplicate email rejected (UNIQUE)"      409 POST /api/guests '{"first_name":"X","last_name":"Y","phone":"9000000001","email":"api.test@example.com"}'
+check "invalid email rejected"                 400 POST /api/guests '{"first_name":"X","last_name":"Y","phone":"9000000002","email":"nope"}'
 check "delete guest with bookings (FK)"        409 DELETE /api/guests/1
-check "full-text search 'pri'"                 200 GET  "/api/guests?q=pri"
-[ "$(field "[0]['first_name']")" = "Priya" ] && { PASS=$((PASS+1)); echo "  PASS  search returns Priya first"; } || { FAIL=$((FAIL+1)); echo "  FAIL  search did not return Priya first"; }
+check "full-text search 'diy'"                 200 GET  "/api/guests?q=diy"
+[ "$(field "[0]['first_name']")" = "Diya" ] && { PASS=$((PASS+1)); echo "  PASS  search returns Diya first"; } || { FAIL=$((FAIL+1)); echo "  FAIL  search did not return Diya first"; }
 
 echo "Rooms (NOT EXISTS availability)"
 check "availability for valid dates"           200 GET  "/api/rooms/availability?check_in=2026-11-01&check_out=2026-11-04"
@@ -53,7 +53,7 @@ check "admin: duplicate room number (UNIQUE)"  409 POST /api/rooms '{"room_numbe
 check "admin: delete room type in use (FK)"    409 DELETE /api/room-types/1 "" "$TMP/admin"
 
 echo "Bookings (procedure + transaction + triggers)"
-check "overlapping booking rejected"           409 POST /api/bookings '{"guest_id":3,"room_id":1,"check_in":"2026-11-02","check_out":"2026-11-04"}'
+check "overlapping booking rejected"           409 POST /api/bookings '{"guest_id":3,"room_id":8,"check_in":"2026-11-01","check_out":"2026-11-03"}'
 check "over-payment rolled back"               409 POST /api/bookings "{\"guest_id\":$GUEST,\"room_id\":3,\"check_in\":\"2030-01-01\",\"check_out\":\"2030-01-03\",\"payment_amount\":999999}"
 check "…and nothing was saved (room still free)" 200 GET "/api/bookings?guest_id=$GUEST"
 [ "$(field ".__len__()")" = "0" ] && { PASS=$((PASS+1)); echo "  PASS  rollback left no booking behind"; } || { FAIL=$((FAIL+1)); echo "  FAIL  rollback left a booking behind"; }
@@ -62,12 +62,12 @@ BOOKING=$(field "['booking_id']")
 check "booking detail"                         200 GET  "/api/bookings/$BOOKING"
 [ "$(field "['details']['num_nights']")" = "3" ] && { PASS=$((PASS+1)); echo "  PASS  trigger set num_nights = 3"; } || { FAIL=$((FAIL+1)); echo "  FAIL  num_nights not 3"; }
 check "same service twice (PRIMARY KEY)"       409 POST "/api/bookings/$BOOKING/services" '{"service_id":1}'
-check "move into an occupied room (trigger)"   409 PUT  "/api/bookings/$BOOKING" '{"room_id":1,"check_in":"2026-11-01","check_out":"2026-11-02"}'
+check "move into an occupied room (trigger)"   409 PUT  "/api/bookings/$BOOKING" '{"room_id":8,"check_in":"2026-11-01","check_out":"2026-11-02"}'
 check "second payment (UNIQUE booking_id)"     409 POST /api/payments "{\"booking_id\":$BOOKING,\"amount\":10,\"payment_date\":\"2030-01-02\"}"
 
 echo "Reports & Neo4j"
 for k in availability guestBookings guestDue occupancy revenue topGuests staffWorkload; do
-  check "report $k" 200 GET "/api/reports/$k?check_in=2026-11-01&check_out=2026-11-04&guest_id=2&date=2026-11-02&from=2026-08-01&to=2026-10-31" "" "$TMP/admin"
+  check "report $k" 200 GET "/api/reports/$k?check_in=2026-11-01&check_out=2026-11-04&guest_id=2&date=2026-10-30&from=2026-08-01&to=2026-10-31" "" "$TMP/admin"
 done
 check "Neo4j recommendations (503 = paused)"   200 GET  /api/graph/recommendations/1
 

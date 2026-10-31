@@ -2,14 +2,9 @@
 // own constraints; these give quicker, clearer messages for obvious mistakes.
 import { z } from "zod";
 
-const optionalText = (max: number) =>
-  z
-    .string()
-    .trim()
-    .max(max)
-    .optional()
-    .nullable()
-    .transform((v) => (v ? v : null)); // "" → NULL in the database
+// Phone and email are NOT NULL in 01_schema.sql, so they are required here too.
+const phone = z.string().trim().min(1, "is required").max(20);
+const email = z.string().trim().max(120).regex(/^\S+@\S+\.\S+$/, "is not a valid email");
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "use a date like 2026-11-01");
 const id = z.coerce.number().int().positive();
@@ -18,8 +13,8 @@ const money = z.coerce.number().min(0, "can't be negative").max(99999999);
 export const GuestSchema = z.object({
   first_name: z.string().trim().min(1, "is required").max(50),
   last_name: z.string().trim().min(1, "is required").max(50),
-  phone: optionalText(20),
-  email: optionalText(100).refine((v) => v === null || /^\S+@\S+\.\S+$/.test(v), "is not a valid email"),
+  phone,
+  email,
 });
 
 export const RoomSchema = z.object({
@@ -34,16 +29,16 @@ export const RoomTypeSchema = z.object({
 });
 
 export const ServiceSchema = z.object({
-  service_name: z.string().trim().min(1, "is required").max(100),
+  service_name: z.string().trim().min(1, "is required").max(80),
   price: money,
 });
 
 export const EmployeeSchema = z.object({
   first_name: z.string().trim().min(1, "is required").max(50),
   last_name: z.string().trim().min(1, "is required").max(50),
-  role: z.string().trim().min(1, "is required").max(50),
-  phone: optionalText(20),
-  email: optionalText(100),
+  role: z.string().trim().min(1, "is required").max(40),
+  phone,
+  email,
 });
 
 export const NewBookingSchema = z.object({
